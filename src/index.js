@@ -5,6 +5,8 @@ import { up, cd, ls } from './nwd.js';
 import { isEmpty } from './validation.js';
 import * as msg from './messages.js';
 import { read, create, rename, remove, copy, move } from './fs/index.js';
+import os from './os.js';
+import { getArgv } from './helpers.js';
 
 
 const run = async () => {
@@ -33,6 +35,7 @@ const run = async () => {
     stdin.on('data', async (data) => {
       const command = data.toString().replace(EOL, '').split(' ');
       const command_param = command[1];
+
       const currDir = cwd();
 
       const source = path.join(currDir, command[1] ?? '');
@@ -77,6 +80,9 @@ const run = async () => {
           case 'rm':
             await remove(source);
             break;
+          case 'os':
+            const argv = getArgv(command);
+            await os(argv);
           default:
             break;
         }
