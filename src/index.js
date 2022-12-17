@@ -1,9 +1,10 @@
 import { homedir, EOL } from 'os';
-import { argv, stdin, stdout, cwd, chdir } from 'process';
+import { argv, stdin, cwd, chdir } from 'process';
 import path from 'path';
 import { up, cd, ls } from './nwd.js';
 import { isEmpty } from './validation.js';
 import * as msg from './messages.js';
+import { read, create, rename, remove, copy, move } from './fs/index.js';
 
 
 const run = async () => {
@@ -32,10 +33,14 @@ const run = async () => {
     stdin.on('data', async (data) => {
       const command = data.toString().replace(EOL, '').split(' ');
       const command_param = command[1];
+      const currDir = cwd();
+
+      const source = path.join(currDir, command[1] ?? '');
+      const dest = path.join(currDir, command[2] ?? '');
 
       console.log('comand=', command);
       const commandName = command[0];
-      const currDir = cwd();
+
       try {
         switch (commandName) {
           case '.exit':
@@ -45,35 +50,32 @@ const run = async () => {
             up();
             break;
           case 'cd':
-            if (isEmpty(command[1])) {
+            if (isEmpty(source)) {
               throw new Error(msg.ERROR_MESSAGE.invalidInput);
             }
 
-            await cd(command[1]);
+            await cd(source);
             break;
           case 'ls':
             await ls();
             break;
           case 'cat':
-            read(command_param);
+            await read(source);
             break;
           case 'add':
-            create();
+            await create(source);
             break;
           case 'rn':
-            const source = command[1];
-            const dest = command[2];
-
-            rename(command_param,);
+            await rename(source, dest);
             break;
           case 'cp':
-            copy();
+            await copy(source, dest);
             break;
           case 'mv':
-            move();
+            await move(source, dest);
             break;
           case 'rm':
-            remove();
+            await remove(source);
             break;
           default:
             break;

@@ -15,17 +15,14 @@ export const up = () => {
 }
 
 export const cd = async (pathName) => {
-  const currDir = cwd();
-
   if (isNotEmpty(pathName)) {
-    const fullPath = path.join(currDir, pathName);
-    console.log(fullPath);
+    console.log(pathName);
     try {
-      await access(fullPath);
+      await access(pathName);
     } catch (err) {
       throw new Error(ERROR_MESSAGE.operationFailed);
     }
-    chdir(fullPath);
+    chdir(pathName);
   }
 }
 
@@ -50,8 +47,8 @@ export const ls = async () => {
   })).then(() => {
     dirArr.sort((a, b) => a.localeCompare(b));
     fileArr.sort((a, b) => a.localeCompare(b));
-    console.log('dir=', dirArr);
-    console.log('file=', fileArr);
+    //console.log('dir=', dirArr);
+    //console.log('file=', fileArr);
     console.log('end');
 
     const dirInfoArr = dirArr.map(dir => ({ name: dir, type: 'directory' }));

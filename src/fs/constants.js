@@ -1,0 +1,2 @@
+export const FAILED_MSG = 'FS operation failed';
+export const FILES_PATH = './files/';
