@@ -7,6 +7,7 @@ import * as msg from './messages.js';
 import { read, create, rename, remove, copy, move } from './fs/index.js';
 import os from './os.js';
 import { getArgv } from './helpers.js';
+import { calculateHash as hash } from './hash/calcHash.js';
 
 
 const run = async () => {
@@ -83,6 +84,8 @@ const run = async () => {
           case 'os':
             const argv = getArgv(command);
             await os(argv);
+          case 'hash':
+            await hash(source);
           default:
             break;
         }
