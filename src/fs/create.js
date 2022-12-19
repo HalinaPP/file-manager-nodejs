@@ -1,7 +1,6 @@
 import { writeFile } from 'fs/promises';
 import { throwOperationFailed, throwInvalidInput } from '../validation.js';
-import { isNotFilename, isExists } from './access.js';
-import { getAbsolutePath } from '../helpers.js';
+import { isNotFilename, isExists, getAbsolutePath } from '../fs-helpers.js';
 
 export const create = async (fileName) => {
     try {

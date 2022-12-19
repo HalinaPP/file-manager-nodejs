@@ -4,6 +4,7 @@ import { readdir } from 'fs/promises';
 import { access } from 'fs/promises';
 import { ERROR_MESSAGE } from './messages.js';
 import { throwOperationFailed } from './validation.js';
+import { printCurrentDirectory } from './helpers.js';
 
 export const up = () => {
   const currDir = cwd();
@@ -51,6 +52,8 @@ export const ls = async () => {
       const fileInfoArr = fileArr.map((file) => ({ name: file, type: 'file' }));
 
       console.table([...dirInfoArr, ...fileInfoArr], ['name', 'type']);
+
+      printCurrentDirectory();
     })
     .catch((err) => {
       console.log(ERROR_MESSAGE.operationFailed, err);

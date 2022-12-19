@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { throwOperationFailed, throwInvalidInput } from '../validation.js';
-import { isExists, isNotFilename } from './access.js';
+import { isExists, isNotFilename } from '../fs-helpers.js';
 
 export const rename = async (source, newFilename) => {
     try {

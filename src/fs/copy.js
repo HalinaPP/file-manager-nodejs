@@ -1,13 +1,12 @@
 import { createReadStream, createWriteStream } from 'fs';
 import path from 'path';
-import { isExists, isDir } from './access.js';
+import { isExists, isDir, getAbsolutePath } from '../fs-helpers.js';
 import {
   isEmpty,
   throwInvalidInput,
   throwOperationFailed,
   throwFileExists
 } from '../validation.js';
-import { getAbsolutePath } from '../helpers.js';
 
 const getDestName = async (sourceName, destDir) => {
   const { dir, base } = path.parse(sourceName);

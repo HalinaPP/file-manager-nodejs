@@ -4,7 +4,8 @@ import { compress } from './zip/compress.js';
 import { decompress } from './zip/decompress.js';
 import { read, create, rename, remove, copy, move } from './fs/index.js';
 import os from './os.js';
-import { getAbsolutePath, printCurrentDirectory } from './helpers.js';
+import { printCurrentDirectory } from './helpers.js';
+import { getAbsolutePath } from './fs-helpers.js';
 import { throwInvalidInput } from './validation.js';
 
 export const resolveCommand = async (commandName, args) => {

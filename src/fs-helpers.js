@@ -1,4 +1,6 @@
+import path from 'path';
 import { access, stat } from 'fs/promises';
+import { isEmpty } from './validation.js';
 
 export const isExists = async (sourceName) => {
   let isSourceExists = false;
@@ -25,4 +27,19 @@ export const isNotFilename = (filename) => {
   );
 
   return isFilenameHaveForbidden;
+};
+
+export const getAbsolutePath = (pathValue) => {
+  const currDir = process.cwd();
+
+  if (isEmpty(pathValue)) {
+    return currDir;
+  }
+
+  const endedPath =
+    pathValue.endsWith(':')
+      ? pathValue + '\\'
+      : pathValue;
+
+  return path.isAbsolute(endedPath) ? endedPath : path.join(currDir, endedPath);
 };
