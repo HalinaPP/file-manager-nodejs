@@ -1,6 +1,5 @@
 import { createReadStream } from 'fs';
-import { pipeline, Writable } from 'stream';
-import { stdin, stdout } from 'process';
+import { stdout } from 'process';
 import { throwOperationFailed } from '../validation.js';
 import { isExists } from './access.js';
 import { printCurrentDirectory } from '../helpers.js';
@@ -17,7 +16,7 @@ export const read = async (fileName) => {
     await input.pipe(stdout);
 
     input.on('end', () => {
-      console.log('\rn');
+      console.log('\r\n');
       printCurrentDirectory();
     });
   } catch (err) {

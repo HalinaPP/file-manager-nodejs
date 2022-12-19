@@ -28,7 +28,7 @@ export const resolveCommand = async (commandName, args) => {
         await read(source);
         break;
       case 'add':
-        await create(source);
+        await create(args[0]);
         break;
       case 'rn':
         await rename(source, args[1]);
