@@ -29,11 +29,10 @@ export const getAbsolutePath = (pathValue) => {
 const isUserNameNotCorrect = (userNameArg) =>
   userNameArg[0] !== '--username' || userNameArg[1].length < 1;
 
-const getUserNameFromArgs = () => {
+export const getUserNameFromArgs = () => {
   const args = process.argv.slice(2);
 
   const userNameArg = args[0].split('=');
-  console.log('u=', userNameArg);
 
   if (isUserNameNotCorrect(userNameArg)) {
     throw new Error(
@@ -44,8 +43,6 @@ const getUserNameFromArgs = () => {
   return userNameArg[1];
 };
 
-export const welcomeUser = () => {
-  const userName = getUserNameFromArgs();
-
+export const welcomeUser = (userName) => {
   console.log(`${msg.WELCOME} ${userName}!\r\n`);
 };

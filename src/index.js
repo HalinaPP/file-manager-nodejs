@@ -1,13 +1,16 @@
 import { homedir } from 'os';
 import { stdin, chdir } from 'process';
 import * as msg from './messages.js';
-import { printCurrentDirectory, getArgv, welcomeUser } from './helpers.js';
+import { printCurrentDirectory, getArgv, welcomeUser, getUserNameFromArgs } from './helpers.js';
 import { resolveCommand } from './map-command.js';
 
 const run = async () => {
   try {
     chdir(homedir());
-    welcomeUser();
+
+    const userName = getUserNameFromArgs();
+    welcomeUser(userName);
+
     printCurrentDirectory();
 
     stdin.on('data', async (data) => {
