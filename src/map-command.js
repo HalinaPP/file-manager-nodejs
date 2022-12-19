@@ -37,7 +37,7 @@ export const resolveCommand = async (commandName, args) => {
         await copy(source, args[1]);
         break;
       case 'mv':
-        await move(source, dest);
+        await move(source, args[1]);
         break;
       case 'rm':
         await remove(source);

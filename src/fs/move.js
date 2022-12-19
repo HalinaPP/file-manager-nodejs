@@ -1,17 +1,8 @@
-import { throwOperationFailed } from '../validation.js';
-import { isExists } from './access.js';
 import { copy, remove } from './index.js';
 
-export const move = async (source, dest) => {
+export const move = async (source, destDir) => {
   try {
-    const isSourceExists = await isExists(source);
-    const isDestExists = await isExists(dest);
-
-    if (!isSourceExists || isDestExists) {
-      throwOperationFailed();
-    }
-
-    await copy(source, dest);
+    await copy(source, destDir);
     await remove(source);
 
     console.log('File moved!')
