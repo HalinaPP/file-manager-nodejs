@@ -6,15 +6,20 @@ import { read, create, rename, remove, copy, move } from './fs/index.js';
 import os from './os.js';
 import { printCurrentDirectory } from './helpers.js';
 import { getAbsolutePath } from './fs-helpers.js';
-import { throwInvalidInput } from './validation.js';
+import { isEmpty, throwInvalidInput } from './validation.js';
+
+const commandWithoutArgs = ['up', 'ls'];
+const commandWithTwoArg = ['rn', 'cp', 'mv', 'compress', 'decompress'];
 
 export const resolveCommand = async (commandName, args) => {
-
-  const source = getAbsolutePath(args[0] ?? '');
-  const dest = getAbsolutePath(args[1] ?? '');
-
-  console.log('comand=', commandName);
   try {
+    if (!commandWithoutArgs.includes(commandName) && isEmpty(args[0])) {
+      throwInvalidInput();
+    }
+
+    const source = getAbsolutePath(args[0] ?? '');
+    const dest = args[1];
+
     switch (commandName) {
       case 'up':
         up();
@@ -32,13 +37,13 @@ export const resolveCommand = async (commandName, args) => {
         await create(args[0]);
         break;
       case 'rn':
-        await rename(source, args[1]);
+        await rename(source, dest);
         break;
       case 'cp':
-        await copy(source, args[1]);
+        await copy(source, dest);
         break;
       case 'mv':
-        await move(source, args[1]);
+        await move(source, dest);
         break;
       case 'rm':
         await remove(source);

@@ -15,7 +15,6 @@ export const up = () => {
 };
 
 export const cd = async (pathName) => {
-  console.log(pathName);
   try {
     await access(pathName);
   } catch (err) {

@@ -2,14 +2,30 @@ import { createReadStream, createWriteStream } from 'fs';
 import { pipeline } from 'stream';
 import { createBrotliDecompress } from 'zlib';
 import path from 'path';
+import { printCurrentDirectory } from '../helpers.js';
+import { isExists } from '../fs-helpers.js';
+import {
+    validateDestDir,
+    throwOperationFailed
+} from '../validation.js';
+import { getDestName } from './parse-filename.js';
 
+export const decompress = async (fileToDecompress, destDir) => {
 
-export const decompress = async (fileToDecompress, decompressedFile) => {
-    const archiveFileName = path.join(process.cwd(), 'compressed.txt.gz');
-    const streamToDecompress = createReadStream(archiveFileName);
+    await validateDestDir(destDir);
 
-    const decompressedFile2 = path.join(process.cwd(), 'uncompressed.txt');
-    const decompressedStream = createWriteStream(decompressedFile2);
+    const isSourceExists = await isExists(fileToDecompress);
+
+    if (!isSourceExists) {
+        throwOperationFailed();
+    }
+
+    const streamToDecompress = createReadStream(fileToDecompress);
+
+    const { name: destFileName } = path.parse(fileToDecompress);
+    const decompressedFile = await getDestName(destFileName, destDir);
+    const decompressedStream = createWriteStream(decompressedFile);
+
     const brotli = createBrotliDecompress();
 
     pipeline(streamToDecompress, brotli, decompressedStream, (err) => {
@@ -18,5 +34,7 @@ export const decompress = async (fileToDecompress, decompressedFile) => {
         } else {
             console.log(`File ${fileToDecompress} was uncompressed`);
         }
+
+        printCurrentDirectory();
     });
 };

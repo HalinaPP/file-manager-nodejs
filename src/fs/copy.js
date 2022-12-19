@@ -48,7 +48,7 @@ export const copy = async (source, destDir) => {
   const readableStream = createReadStream(source);
   const writableStream = createWriteStream(dest);
 
-  await readableStream.pipe(writableStream);
+  readableStream.pipe(writableStream);
 
   console.log(`File copied! From ${source} to ${dest}`);
 };
