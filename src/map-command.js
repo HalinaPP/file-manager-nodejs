@@ -63,9 +63,11 @@ export const resolveCommand = async (commandName, args) => {
       default:
         throwInvalidInput();
     }
-
-    printCurrentDirectory();
+    if (commandName === 'cp' || commandName === 'rm') {
+      printCurrentDirectory();
+    }
   } catch (err) {
     console.log(err.message);
+    printCurrentDirectory();
   }
 };

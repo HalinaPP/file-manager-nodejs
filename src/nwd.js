@@ -12,6 +12,8 @@ export const up = () => {
   if (path.basename(currDir)) {
     chdir('..');
   }
+
+  printCurrentDirectory();
 };
 
 export const cd = async (pathName) => {
@@ -21,6 +23,7 @@ export const cd = async (pathName) => {
     throwOperationFailed();
   }
   chdir(pathName);
+  printCurrentDirectory();
 };
 
 export const ls = async () => {

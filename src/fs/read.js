@@ -5,21 +5,17 @@ import { isExists } from '../fs-helpers.js';
 import { printCurrentDirectory } from '../helpers.js';
 
 export const read = async (fileName) => {
-  try {
-    const isFileToReadExists = await isExists(fileName);
+  const isFileToReadExists = await isExists(fileName);
 
-    if (!isFileToReadExists) {
-      throwOperationFailed();
-    }
-
-    const input = createReadStream(fileName);
-    await input.pipe(stdout);
-
-    input.on('end', () => {
-      console.log('\r\n');
-      printCurrentDirectory();
-    });
-  } catch (err) {
-    console.log(err.message);
+  if (!isFileToReadExists) {
+    throwOperationFailed();
   }
+
+  const input = createReadStream(fileName);
+  input.pipe(stdout);
+
+  input.on('end', () => {
+    console.log('\r\n');
+    printCurrentDirectory();
+  });
 };

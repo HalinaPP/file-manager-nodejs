@@ -7,6 +7,7 @@ import {
   throwOperationFailed,
   throwFileExists
 } from '../validation.js';
+import { printCurrentDirectory } from '../helpers.js';
 
 const getDestName = async (sourceName, destDir) => {
   const { dir, base } = path.parse(sourceName);

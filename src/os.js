@@ -4,6 +4,7 @@ import {
   throwInvalidInput,
   isEmpty
 } from './validation.js';
+import { printCurrentDirectory } from './helpers.js';
 
 const os = async (args) => {
   if (isEmpty(args[0])) {
@@ -41,6 +42,8 @@ const os = async (args) => {
       throwOperationFailed();
       break;
   }
+
+  printCurrentDirectory();
 };
 
 export default os;
