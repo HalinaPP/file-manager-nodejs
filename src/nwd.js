@@ -3,6 +3,7 @@ import path from 'path';
 import { readdir } from 'fs/promises';
 import { access } from 'fs/promises';
 import { ERROR_MESSAGE } from './messages.js';
+import { throwOperationFailed } from './validation.js';
 
 export const up = () => {
   const currDir = cwd();
@@ -17,7 +18,7 @@ export const cd = async (pathName) => {
   try {
     await access(pathName);
   } catch (err) {
-    throw new Error(ERROR_MESSAGE.operationFailed);
+    throwOperationFailed();
   }
   chdir(pathName);
 };

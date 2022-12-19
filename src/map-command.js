@@ -5,7 +5,7 @@ import { decompress } from './zip/decompress.js';
 import { read, create, rename, remove, copy, move } from './fs/index.js';
 import os from './os.js';
 import { getAbsolutePath, printCurrentDirectory } from './helpers.js';
-import * as msg from './messages.js';
+import { throwInvalidInput } from './validation.js';
 
 export const resolveCommand = async (commandName, args) => {
 
@@ -55,7 +55,7 @@ export const resolveCommand = async (commandName, args) => {
         await decompress(source, dest);
         break;
       default:
-        throw new Error(msg.ERROR_MESSAGE.invalidInput);
+        throwInvalidInput();
     }
 
     printCurrentDirectory();

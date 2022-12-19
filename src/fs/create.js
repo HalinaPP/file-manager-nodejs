@@ -1,12 +1,12 @@
 import { writeFile } from 'fs/promises';
-import { FAILED_MSG } from './constants.js';
+import { throwOperationFailed } from '../validation.js';
 import { isExists } from './access.js';
 
 export const create = async (fileName) => {
     try {
         const isfileExists = await isExists(fileName);
         if (isfileExists) {
-            throw new Error(FAILED_MSG);
+            throwOperationFailed();
         }
 
         await writeFile(fileName, '', 'utf-8');

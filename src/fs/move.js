@@ -1,4 +1,4 @@
-import { FAILED_MSG } from './constants.js';
+import { throwOperationFailed } from '../validation.js';
 import { isExists } from './access.js';
 import { copy, remove } from './index.js';
 
@@ -8,7 +8,7 @@ export const move = async (source, dest) => {
     const isDestExists = await isExists(dest);
 
     if (!isSourceExists || isDestExists) {
-      throw new Error(FAILED_MSG);
+      throwOperationFailed();
     }
 
     await copy(source, dest);

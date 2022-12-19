@@ -1,8 +1,7 @@
 import { createReadStream, createWriteStream } from 'fs';
 import path from 'path';
-import { ERROR_MESSAGE } from '../messages.js';
 import { isExists, isDir } from './access.js';
-import {isNotEmpty} from '../validation.js';
+import { throwInvalidInput, throwOperationFailed } from '../validation.js';
 
 export const copy = async (source, destDir) => {
   try {
@@ -13,22 +12,22 @@ export const copy = async (source, destDir) => {
     const destDirData = path.parse(destDir);
 
     if (!isSourceExists || !isDestExists) {
-        throw new Error(ERROR_MESSAGE.operationFailed);
-      }
-      
-    if(!isDir(destDir)){
-        console.log('base=',destDirData.base)
-        throw new Error(ERROR_MESSAGE.invalidInput);
+      throwOperationFailed();
     }
-  
-   
+
+    if (!isDir(destDir)) {
+      console.log('base=', destDirData.base)
+      throwInvalidInput();
+    }
+
+
 
     const { dir, base, name, ext } = path.parse(source);
     let destFileName = base;
 
-    if(dir===destDir) {
-        console.log('File name exists.');
-        destFileName =`${name}-Copy${ext}`; 
+    if (dir === destDir) {
+      console.log('File name exists.');
+      destFileName = `${name}-Copy${ext}`;
     }
     const dest = path.resolve(destDir, destFileName);
 

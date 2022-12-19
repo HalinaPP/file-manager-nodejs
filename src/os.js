@@ -1,7 +1,15 @@
 import * as sOs from 'os';
-import { throwOperationFailed } from './validation.js';
+import {
+  throwOperationFailed,
+  throwInvalidInput,
+  isEmpty
+} from './validation.js';
 
 const os = async (args) => {
+  if (isEmpty(args[0])) {
+    throwInvalidInput();
+  }
+
   if (!args[0].startsWith('--')) {
     throwOperationFailed();
   }
@@ -16,7 +24,7 @@ const os = async (args) => {
       console.log(sOs.arch());
       break;
     case 'cpus':
-      const cpus = sOs.cpus().map(cpu => cpu.model);
+      const cpus = sOs.cpus().map((cpu) => cpu.model);
       const cpusAmount = cpus.length;
 
       console.log(`Number of cpu: ${cpusAmount}`);
@@ -33,6 +41,6 @@ const os = async (args) => {
       throwOperationFailed();
       break;
   }
-}
+};
 
 export default os;
