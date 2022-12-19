@@ -26,6 +26,11 @@ export const getAbsolutePath = (pathValue) => {
   return path.isAbsolute(endedPath) ? endedPath : path.join(currDir, endedPath);
 };
 
+export const createCopyFileName = (name, ext) => {
+  const randomNumber = Math.floor(Math.random() * 1000);
+  return `${name}-Copy-${randomNumber}${ext}`;
+}
+
 const isUserNameNotCorrect = (userNameArg) =>
   userNameArg[0] !== '--username' || userNameArg[1].length < 1;
 

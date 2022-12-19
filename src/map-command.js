@@ -34,7 +34,7 @@ export const resolveCommand = async (commandName, args) => {
         await rename(source, args[1]);
         break;
       case 'cp':
-        await copy(source, dest);
+        await copy(source, args[1]);
         break;
       case 'mv':
         await move(source, dest);

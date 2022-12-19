@@ -1,43 +1,58 @@
 import { createReadStream, createWriteStream } from 'fs';
 import path from 'path';
 import { isExists, isDir } from './access.js';
-import { throwInvalidInput, throwOperationFailed } from '../validation.js';
+import {
+  isEmpty,
+  throwInvalidInput,
+  throwOperationFailed,
+  throwFileExists
+} from '../validation.js';
+import { getAbsolutePath } from '../helpers.js';
+
+const getDestName = async (sourceName, destDir) => {
+  const { dir, base, name, ext } = path.parse(sourceName);
+  const destFileName = base;
+
+  if (dir === destDir) {
+    throwFileExists();
+  }
+  const dest = path.resolve(destDir, destFileName);
+
+  if (await isExists(dest)) {
+    throwFileExists();
+  }
+
+  return dest;
+};
 
 export const copy = async (source, destDir) => {
   try {
-    const isSourceExists = await isExists(source);
-    const isDestExists = await isExists(destDir);
+    if (isEmpty(destDir)) {
+      throwInvalidInput();
+    }
 
-    console.log();
-    const destDirData = path.parse(destDir);
+    const destDirPath = getAbsolutePath(destDir);
+    const isDestExists = await isExists(destDirPath);
+    const isSourceExists = await isExists(source);
 
     if (!isSourceExists || !isDestExists) {
       throwOperationFailed();
     }
 
-    if (!isDir(destDir)) {
-      console.log('base=', destDirData.base)
+    const isDestDir = await isDir(destDirPath);
+
+    if (!isDestDir) {
       throwInvalidInput();
     }
 
-
-
-    const { dir, base, name, ext } = path.parse(source);
-    let destFileName = base;
-
-    if (dir === destDir) {
-      console.log('File name exists.');
-      destFileName = `${name}-Copy${ext}`;
-    }
-    const dest = path.resolve(destDir, destFileName);
-
+    const dest = await getDestName(source, destDirPath);
 
     const readableStream = createReadStream(source);
     const writableStream = createWriteStream(dest);
 
-    readableStream.pipe(writableStream);
+    await readableStream.pipe(writableStream);
 
-    console.log('File copied!');
+    console.log(`File copied! From ${source} to ${dest}`);
   } catch (err) {
     console.log(err.message);
   }
