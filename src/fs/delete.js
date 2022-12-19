@@ -1,6 +1,6 @@
 import { unlink } from 'fs/promises';
 import { FAILED_MSG } from './constants.js';
-import { isExists } from './helpers.js';
+import { isExists } from './access.js';
 
 export const remove = async (fileToRemove) => {
     try {

@@ -1,6 +1,6 @@
 import { writeFile } from 'fs/promises';
 import { FAILED_MSG } from './constants.js';
-import { isExists } from './helpers.js';
+import { isExists } from './access.js';
 
 export const create = async (fileName) => {
     try {

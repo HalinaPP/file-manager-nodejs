@@ -1,11 +1,16 @@
 
 import fs from 'fs/promises';
+import path from 'path';
 import { FAILED_MSG } from './constants.js';
-import { isExists } from './helpers.js';
+import { isExists } from './access.js';
 
-export const rename = async (source, dest) => {
+export const rename = async (source, newFilename) => {
     try {
         const isSourceExists = await isExists(source);
+
+        const {dir, base} = path.parse(source);
+        const dest = path.resolve(dir,newFilename);
+
         const isDestExists = await isExists(dest);
 
         if (!isSourceExists || isDestExists) {

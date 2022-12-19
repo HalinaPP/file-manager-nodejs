@@ -1,5 +1,5 @@
 import { FAILED_MSG } from './constants.js';
-import { isExists } from './helpers.js';
+import { isExists } from './access.js';
 import { copy, remove } from './index.js';
 
 export const move = async (source, dest) => {

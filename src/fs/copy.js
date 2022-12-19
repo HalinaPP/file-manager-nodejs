@@ -1,19 +1,45 @@
-import { copyFile } from 'fs/promises';
-import { FAILED_MSG } from './constants.js';
-import { isExists } from './helpers.js';
+import { createReadStream, createWriteStream } from 'fs';
+import path from 'path';
+import { ERROR_MESSAGE } from '../messages.js';
+import { isExists, isDir } from './access.js';
+import {isNotEmpty} from '../validation.js';
 
-export const copy = async (source, dest) => {
-    try {
-        const isSourceExists = await isExists(source);
-        const isDestExists = await isExists(dest);
+export const copy = async (source, destDir) => {
+  try {
+    const isSourceExists = await isExists(source);
+    const isDestExists = await isExists(destDir);
 
-        if (!isSourceExists || isDestExists) {
-            throw new Error(FAILED_MSG);
-        }
+    console.log();
+    const destDirData = path.parse(destDir);
 
-        copyFile(source, dest);
-        console.log('File copied!')
-    } catch (err) {
-        console.log(err.message);
+    if (!isSourceExists || !isDestExists) {
+        throw new Error(ERROR_MESSAGE.operationFailed);
+      }
+      
+    if(!isDir(destDir)){
+        console.log('base=',destDirData.base)
+        throw new Error(ERROR_MESSAGE.invalidInput);
     }
+  
+   
+
+    const { dir, base, name, ext } = path.parse(source);
+    let destFileName = base;
+
+    if(dir===destDir) {
+        console.log('File name exists.');
+        destFileName =`${name}-Copy${ext}`; 
+    }
+    const dest = path.resolve(destDir, destFileName);
+
+
+    const readableStream = createReadStream(source);
+    const writableStream = createWriteStream(dest);
+
+    readableStream.pipe(writableStream);
+
+    console.log('File copied!');
+  } catch (err) {
+    console.log(err.message);
+  }
 };

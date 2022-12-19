@@ -1,7 +1,12 @@
 import * as sOs from 'os';
+import { throwOperationFailed } from './validation.js';
 
 const os = async (args) => {
-  const currArg = args[0];
+  if (!args[0].startsWith('--')) {
+    throwOperationFailed();
+  }
+
+  const currArg = args[0].slice(2);
 
   switch (currArg) {
     case 'EOL':
@@ -25,10 +30,8 @@ const os = async (args) => {
       console.log(sOs.userInfo().username);
       break;
     default:
+      throwOperationFailed();
       break;
-
-
-
   }
 }
 
