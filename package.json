@@ -1,0 +1,20 @@
+{
+  "name": "file-manager-nodejs",
+  "version": "1.0.0",
+  "description": "File manager",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HalinaPP/file-manager-nodejs.git"
+  },
+  "keywords": [
+    "nodejs",
+    "filemanager"
+  ],
+  "author": "halinap",
+  "license": "ISC",
+  "homepage": "https://github.com/HalinaPP/file-manager-nodejs#readme"
+}
